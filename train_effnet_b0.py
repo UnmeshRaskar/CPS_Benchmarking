@@ -16,8 +16,9 @@ import copy
 
 cudnn.benchmark = True
 
-# Data augmentation and normalization for training
-# Just normalization for validation
+# Change 1)
+# Everytime a new dataset is used for training, mean and std values need to be updated. These values are calculated on the TRAINING set with the help of \
+# calc_mean_std.py
 mean = [0.2419, 0.2216, 0.2201]
 std = [0.2257, 0.2108, 0.2055]
 
@@ -52,6 +53,7 @@ data_transforms = {
     
 }
 
+# Change 2) Change the data directory 
 data_dir = '/nfs/uraskar/Data/high_res/behaviour_detection/batch_4/cow_id_settings/Experiment_5'
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
@@ -125,7 +127,7 @@ def train_model(model, criterion, optimizer, scheduler, num_epochs=25):
             if phase == 'val' and epoch_acc > best_acc:
                 best_acc = epoch_acc
                 best_model_wts = copy.deepcopy(model.state_dict())
-                torch.save(model.state_dict(), 'id_behv5.pt')
+                torch.save(model.state_dict(), 'id_behv5.pt') # Change 3) Change the saved model.pt name
 
         # print()
 
@@ -161,6 +163,8 @@ model_ft.classifier = torch.nn.Sequential(
 num_ftrs = 1280
 # Here the size of each output sample is set to 2.
 # Alternatively, it can be generalized to nn.Linear(num_ftrs, len(class_names)).
+
+# Change 4) Make sure the final dense layer has #neurons = #classes
 # model_ft.fc = nn.Linear(num_ftrs, 16) # For Cow_id
 model_ft.fc = nn.Linear(num_ftrs, 7) # For Behavior
 
