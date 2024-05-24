@@ -18,10 +18,10 @@ cudnn.benchmark = True
 import sklearn
 from sklearn.metrics import classification_report
 
-# from dummy import custom_classification_report
 
-# Data augmentation and normalization for training
-# Just normalization for validation
+# Change 1)
+# Everytime a new dataset is used for training, mean and std values need to be updated. These values are calculated on the TRAINING set with the help of \
+# calc_mean_std.py
 mean = [0.2419, 0.2216, 0.2201]
 std = [0.2257, 0.2108, 0.2055]
 
@@ -55,7 +55,7 @@ data_transforms = {
     
 }
 
-
+# Change 2) Change the data directory 
 data_dir = '/nfs/uraskar/Data/high_res/behaviour_detection/batch_4/cow_id_settings/Experiment_5'
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
@@ -112,21 +112,18 @@ model_ft.classifier = torch.nn.Sequential(
 
 #num_ftrs = model_ft.fc.in_features
 num_ftrs = 1280
-# Here the size of each output sample is set to 2.
-# Alternatively, it can be generalized to nn.Linear(num_ftrs, len(class_names)).
+
+# Change 4) Make sure the final dense layer has #neurons = #classes
 # model_ft.fc = nn.Linear(num_ftrs, 16) # For Cow_id classification
 model_ft.fc = nn.Linear(num_ftrs, 7) # For Behavior Classification
 
 model_ft = model_ft.to(device)
 
-# model_ft.load_state_dict(torch.load('best_weights_from_csl.pt'))
-model_ft.load_state_dict(torch.load('id_behv5.pt'))
+model_ft.load_state_dict(torch.load('id_behv5.pt')) # Change 3) Change the saved model.pt name
 
 true_labels, pred_labels = infer(model_ft)
-# print(true_labels)
-# print(pred_labels)
+# print(true_labels) # For debug
+# print(pred_labels) # For debug
 
 # funct_print(true_labels, pred_labels, class_names)
 print(classification_report(y_true = true_labels, y_pred = pred_labels, target_names = class_names, digits=4))
-
-# print(custom_classification_report(true_labels, pred_labels, class_names))
