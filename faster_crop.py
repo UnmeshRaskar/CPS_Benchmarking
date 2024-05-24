@@ -4,6 +4,9 @@ import time
 from multiprocessing import Pool
 from functools import partial
 
+# This code will use GPU for faster cropping of bboxes from the video frames
+# Scroll down to the end to make changes in just the directory paths
+
 # Step 0) To crop bboxes from full frames using labels file
 def process_image(image_file, image_folder, annotation_folder, output_folder):
     # Get the corresponding annotation file name
@@ -29,13 +32,14 @@ def process_image(image_file, image_folder, annotation_folder, output_folder):
         # Convert string values to floats
         x_center, y_center, width, height = map(float, parts[1:])
 
+        # There are 2 bbox formats, if this doesn't work, try the other one
         # Calculate the top-left and bottom-right corner coordinates of the bounding box
         x1 = int((x_center - width/2) * image.shape[1])
         y1 = int((y_center - height/2) * image.shape[0])
         x2 = int((x_center + width/2) * image.shape[1])
         y2 = int((y_center + height/2) * image.shape[0])
 
-        # Ensure x1 and y1 are not negative
+        # Ensure x1 and y1 are not negative # Some of the bounding boxes go outside the video frame image
         x1 = max(0, x1)
         y1 = max(0, y1)
 
@@ -63,12 +67,25 @@ def create_folders_and_crop(image_folder, annotation_folder, output_folder):
         process_image_partial = partial(process_image, image_folder=image_folder, annotation_folder=annotation_folder, output_folder=output_folder)
         pool.map(process_image_partial, image_files)
 
-# Example usage
+###################
+
+# We have created a directory structure like
+'''
+Setting_1 ----- Train --------- 1,2,3,...,16
+                Val   --------- 1,2,3,...,16
+                Test  --------- 1,2,3,...,16
+Setting_2  ----- Train --------- 1,2,3,...,16
+                Val   --------- 1,2,3,...,16
+                Test  --------- 1,2,3,...,16
+....
+'''
+
 subfolders = ['train', 'test', 'val']
 settings = ['1','2','3','4', '5']
 
 start_time = time.time()
 
+# Change 1) Make changes to image_folder, annotation_folder, output_folder paths
 for setting in settings:
     for subfolder in subfolders:
         image_folder = f"/nfs/uraskar/Data/high_res/new2_16class_data/new_settings/setting_{setting}/{subfolder}/images"
