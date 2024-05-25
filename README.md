@@ -48,15 +48,15 @@ Example of Type 2 splitting. Setting 1- Train: Cow 1 to Cow 12, Val: Cow 13, Cow
 Setting 2- Train: Cow 3 to Cow 14, Val: Cow 15, Cow 16, Test: Cow 1, Cow 2
 ....
 
-> Setting up the directories for Splitting Strategy_1
-Individual cow behavior directory =
-Filtered behavior directory =
-Cropped bboxes directory = 
+> Setting up the directories for Splitting Strategy_1 <br>
+Individual cow behavior directory =                   <br>
+Filtered behavior directory =                         <br>
+Cropped bboxes directory =                            <br>
 First, run preprocess_csv.py to filter the cow behavior csv files so that they are much smaller
 Run modified_crop_behavior.py
 
-> Setting up the directories for Splitting Strategy_2
-Individual cow behavior directory =
-Filtered behavior directory =
-Cropped bboxes directory =
-Run create_id_settings.py, then run cow_unit_split.py 
+> Setting up the directories for Splitting Strategy_2  <br>
+Individual cow behavior directory =                    <br>
+Filtered behavior directory =                          <br>
+Cropped bboxes directory =                             <br> 
+Run create_id_settings.py, then run cow_unit_split.py  <br>
