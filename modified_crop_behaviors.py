@@ -63,7 +63,7 @@ def crop_behavior_cow(cow_id, cam_id, subfolder, setting):
 
     return None
 
-
+# Check how many of these cows behavior csv files are available
 cows = ['01','02','03','04','05','06','07','08','09','10','11','14','15','16']
 cams = [1, 2, 3, 4]
 settings = ['1','2','3','4','5']
