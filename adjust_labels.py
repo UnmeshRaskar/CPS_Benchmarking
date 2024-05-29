@@ -15,6 +15,10 @@ for setup in ['1', '2','3','4','5']: #['2','3','4','5']
                 file_path = os.path.join(folder_path, filename)
                 with open(file_path, 'r') as file:
                     lines = file.readlines()
+                    # use this code to check for empty label files and delete them
+                    if len(lines) == 0:
+                        print(f'Deleting empty file: {file_path}')
+                        os.remove(file_path)
 
                 with open(file_path, 'w') as file:
                     for line in lines:
