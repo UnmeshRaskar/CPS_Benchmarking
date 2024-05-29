@@ -18,47 +18,50 @@ To create the 5 settings of experiments, run chunking.py <br>
 
 # 1) Cow Detection
 We use YOLOv7-w6 for finetuning it on our cows dataset for a single class (cow) object detection <br>
-Clone the official YOLOv7 repository from here <br>
-Images are settings/setting_1/images. Lables are in settings/setting_1/labels (labels adjusted to single_class instead of 16 class) <br>
-Run adjust_labels.py to convert all annotation files to single class (class='0') <br>
-Follow the instructions here for modifying the YOLOv7 repo for the finetuning experiments: article link to modify cfg, data and loss definitions for w6 model weight <br>
-Training- run train_aux.py <br>
-Inference- run test.py <br>
+- Clone the official YOLOv7 repository from here <br>
+  - Images are settings/setting_1/images  <br>
+  - Lables are in settings/setting_1/labels (labels adjusted to single class instead of 16 classes) <br>
+- Run adjust_labels.py to convert all annotation files to single class (class='0') <br>
+- Follow the instructions here for modifying the YOLOv7 repo for the finetuning experiments: article link to modify cfg, data and loss definitions for w6 model weight <br>
+- Training- run train_aux.py <br>
+- Inference- run test.py <br>
 
 # 2.0) Cropping the bboxes
-To train the classifier on cow identification, we crop the bboxes from the available annotated frames <br>
-Images directory = <br>
-Labels directory = <br>
-Run faster_crop.py 
+- To train the classifier on cow identification, we crop the bboxes from the available annotated frames <br>- 
+- Images directory = <br>
+- Labels directory = <br>
+- Run faster_crop.py (uses GPU-accelerated cropping operation over a large number of files)
 
-# 2) Cow Identification
+# 2.1) Cow Identification
 We use EfficientNetv2_b0-S for finetuning it on our individual cows identification as a 16-class classifier <br>
-Clone the official EfficientNet v2 implementation <br>
-Modify the transforms, calculate the mean and std <br>
-Use the calculated mean and std values to run train_effnet.py and then run test_effnet.py <br>
+- Clone the official EfficientNet v2 implementation <br>
+- Calculate the mean and std of each fold by running calc_meanstd.py <br>
+- Use the calculated mean and std values to run train_effnet.py and then run infer_effnet.py <br>
 
 
 # 3) Cow Behavior Classification
-We use EfficientNetv2_b0-S for finetuning it as a 7-class behavior classifier <br>
-Clone the official EfficientNet v2 implementation <br>
-Modify the transforms, calculate the mean and std <br>
-Use the calculated mean and std values to run train_effnet.py and then run test_effnet.py <br>
 
-We do two types of splitting for behavior classification:  <br>
-Type 1 is the same as before (temporal), Type 2 is training on 12 cows, validating on 2 cows, testing on 2 other cows <br>
-Example of Type 2 splitting. Setting 1- Train: Cow 1 to Cow 12, Val: Cow 13, Cow 14, Test: Cow 15, Cow 16 <br>
-Setting 2- Train: Cow 3 to Cow 14, Val: Cow 15, Cow 16, Test: Cow 1, Cow 2 <br>
+We do two types of splitting strategies for behavior classification:  <br>
+- Type 1 is the same as before (temporal), Type 2 is training on 12 cows, validating on 2 cows, testing on 2 other cows <br>
+- Example of Type 2 splitting
+  - Setting 1- Train: Cow 1 to Cow 12, Val: Cow 13, Cow 14, Test: Cow 15, Cow 16 <br>
+  - Setting 2- Train: Cow 3 to Cow 14, Val: Cow 15, Cow 16, Test: Cow 1, Cow 2 <br>
 ....
 
 > Setting up the directories for Splitting Strategy_1 <br>
-Individual cow behavior directory =                   <br>
-Filtered behavior directory =                         <br>
-Cropped bboxes directory =                            <br>
-First, run preprocess_csv.py to filter the cow behavior csv files so that they are much smaller <br>
-Run modified_crop_behavior.py <br>
+- Individual cow behavior directory =                   <br>
+- Filtered behavior directory =                         <br>
+- Cropped bboxes directory =                            <br>
+- First, run preprocess_csv.py to filter the cow behavior csv files so that they are much smaller <br>
+- Run modified_crop_behavior.py to get the <br>
 
 > Setting up the directories for Splitting Strategy_2  <br>
-Individual cow behavior directory =                    <br>
-Filtered behavior directory =                          <br>
-Cropped bboxes directory =                             <br> 
-Run create_id_settings.py, then run cow_unit_split.py  <br>
+- Individual cow behavior directory =                    <br>
+- Filtered behavior directory =                          <br>
+- Cropped bboxes directory =                             <br> 
+- Run create_id_settings.py, then run cow_unit_split.py  <br>
+
+We use EfficientNetv2_b0-S for finetuning it as a 7-class behavior classifier <br>
+- Clone the official EfficientNet v2 implementation <br>
+- Calculate the mean and std of each fold by running calc_meanstd.py <br>
+- Use the calculated mean and std values to run train_effnet.py and then run infer_effnet.py <br>
