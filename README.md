@@ -1,5 +1,5 @@
 # CPS_Benchmarking
-Benchmarking experiments for OpenCows2024
+Benchmarking experiments for MmCows
 
 # Pipeline:
 For the video frames available, we decided to use 
@@ -23,20 +23,25 @@ We use YOLOv7-w6 for finetuning it on our cows dataset for a single class (cow) 
   - Lables are in settings/setting_1/labels (labels adjusted to single class instead of 16 classes) <br>
 - Run adjust_labels.py to convert all annotation files to single class (class='0') <br>
 - Follow the instructions here for modifying the YOLOv7 repo for the finetuning experiments: article link to modify cfg, data and loss definitions for w6 model weight <br>
+- The above yolo code is at /nfs/uraskar/Data/high_res/new_yolo_one_class/yolov7/<br>
 - Training- run train_aux.py <br>
+  - Example usage with arguments: <br>
+  python train_aux.py --workers 8 --device 0,1,2,3 --batch-size 16 --epochs 8 --img-size 1280 1280 --data data/coco_custom.yaml --hyp data/hyp.scratch.custom.yaml --cfg cfg/training/yolov7-w6_custom.yaml --name omkar_combined_1 --weights weights/yolov7-w6_training.pt
 - Inference- run test.py <br>
+  - Example usage with arguments: <br>
+  python test.py --device 0 --batch-size 16 --conf 0.001 --iou 0.65 --data data/coco_custom.yaml --img 1280 --weights /nfs/uraskar/Data/high_res/new_yolo_one_class/yolov7/runs/train/omkar_combined_1/weights/best.pt
 
 # 2.0) Cropping the bboxes
 - To train the classifier on cow identification, we crop the bboxes from the available annotated frames <br>- 
-- Images directory = <br>
-- Labels directory = <br>
+- Images directory = /nfs/uraskar/Data/high_res/new2_16class_data/2_mins_exps/id_combined_settings/setting_{setting}/{subfolder}/images<br>
+- Labels directory = /nfs/uraskar/Data/high_res/new2_16class_data/2_mins_exps/id_combined_settings/setting_{setting}/{subfolder}/labels<br>
 - Run faster_crop.py (uses GPU-accelerated cropping operation over a large number of files)
 
 # 2.1) Cow Identification
 We use EfficientNetv2_b0-S for finetuning it on our individual cows identification as a 16-class classifier <br>
-- Clone the official EfficientNet v2 implementation <br>
+- Croped bboxes are at /nfs/uraskar/Data/high_res/new2_16class_data/2_mins_exps/combined_cropped
 - Calculate the mean and std of each fold by running calc_meanstd.py <br>
-- Use the calculated mean and std values to run train_effnet.py and then run infer_effnet.py <br>
+- Use the calculated mean and std values to run train_effnet_b0.py and then run infer_effnet_b0.py <br>
 
 
 # 3) Cow Behavior Classification
@@ -49,19 +54,18 @@ We do two types of splitting strategies for behavior classification:  <br>
 ....
 
 > Setting up the directories for Splitting Strategy_1 <br>
-- Individual cow behavior directory =                   <br>
-- Filtered behavior directory =                         <br>
-- Cropped bboxes directory =                            <br>
+- Individual cow behavior directory = /nfs/uraskar/Data/high_res/behaviour_detection/batch_4/cow_behaviors                  <br>
+- Filtered behavior directory = /nfs/uraskar/Data/high_res/behaviour_detection/batch_4/filtered_df                   <br>
+- Cropped bboxes directory = /nfs/uraskar/Data/high_res/behaviour_detection/batch_4/cropped_behavior                    <br>
 - First, run preprocess_csv.py to filter the cow behavior csv files so that they are much smaller <br>
 - Run modified_crop_behavior.py to get the <br>
 
 > Setting up the directories for Splitting Strategy_2  <br>
-- Individual cow behavior directory =                    <br>
-- Filtered behavior directory =                          <br>
+- Individual cow behavior directory = /nfs/uraskar/Data/high_res/behaviour_detection/batch_4/cow_behaviors                   <br>
+- Filtered behavior directory = /nfs/uraskar/Data/high_res/behaviour_detection/batch_4/filtered_df                         <br>
 - Cropped bboxes directory =                             <br> 
-- Run create_id_settings.py, then run cow_unit_split.py  <br>
+- Run cow_unit_split.py, then run create_cow_idsettings.py <br>
 
-We use EfficientNetv2_b0-S for finetuning it as a 7-class behavior classifier <br>
-- Clone the official EfficientNet v2 implementation <br>
+We use EfficientNetv2_b0-S for finetuning it as a 7-class behavior classifier. Note: make changes in the last Dense layer to make #neurons = #behaviors <br>
 - Calculate the mean and std of each fold by running calc_meanstd.py <br>
-- Use the calculated mean and std values to run train_effnet.py and then run infer_effnet.py <br>
+- Use the calculated mean and std values to run train_effnet_b0.py and then run infer_effnet_b0.py <br>
