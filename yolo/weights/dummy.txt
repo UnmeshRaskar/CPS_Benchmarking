@@ -1,1 +1,2 @@
-dummy.txt
+# Download yolo-w6.pt weights from this link
+https://github.com/WongKinYiu/yolov7/releases/download/v0.1/yolov7-w6.pt
