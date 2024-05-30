@@ -1,5 +1,5 @@
 # CPS_Benchmarking
-Benchmarking experiments for OpenCows2024
+Benchmarking experiments for MmCows
 
 # Pipeline:
 For the video frames available, we decided to use 
