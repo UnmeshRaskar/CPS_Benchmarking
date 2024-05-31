@@ -81,16 +81,16 @@ Setting_2  ----- Train --------- 1,2,3,...,16
 '''
 
 subfolders = ['train', 'test', 'val']
-settings = ['1','2','3','4', '5']
+settings = ['1','2']#['1','2','3','4', '5']
 
 start_time = time.time()
 
 # Change 1) Make changes to image_folder, annotation_folder, output_folder paths
 for setting in settings:
     for subfolder in subfolders:
-        image_folder = f"/nfs/uraskar/Data/high_res/new2_16class_data/new_settings/setting_{setting}/{subfolder}/images"
-        annotation_folder = f"/nfs/uraskar/Data/high_res/new2_16class_data/new_settings/setting_{setting}/{subfolder}/labels"
-        output_folder = f'/nfs/uraskar/Data/high_res/new2_16class_data/cropped_newsettings/setting_{setting}/{subfolder}'
+        image_folder = f"/nfs/oprabhune/MmCows/vision_data/images_15s_interval/organized_data/fold_{setting}/{subfolder}/images"
+        annotation_folder = f"/nfs/oprabhune/MmCows/vision_data/images_15s_interval/detection_labels_only_with_ID/fold_{setting}/{subfolder}/labels"
+        output_folder = f'/nfs/oprabhune/MmCows/vision_data/images_15s_interval/cropped_bboxes/fold_{setting}/{subfolder}'
         create_folders_and_crop(image_folder, annotation_folder, output_folder)
         print(f"Cropping completed for setting_{setting} {subfolder}")
 

@@ -12,9 +12,9 @@ def crop_behavior_cow(cow_id, cam_id, subfolder, setting):
         cow_id = cow_id[-1]
         print(f'New Id is {cow_id}')
 
-    image_folder = f"/nfs/uraskar/Data/high_res/new2_16class_data/cropped_newsettings/setting_{setting}/{subfolder}/{cow_id}"
+    image_folder = f"/nfs/oprabhune/MmCows/vision_data/images_15s_interval/cropped_bboxes/fold_{setting}/{subfolder}/{cow_id}"
     # annotations_folder = f'/nfs/uraskar/Data/high_res/new2_16class_data/new_settings/setting_1/{subfolder}/labels'
-    output_folder = f'/nfs/uraskar/Data/high_res/behaviour_detection/batch_4/cropped_behavior/setting_{setting}/{subfolder}'
+    output_folder = f'/nfs/oprabhune/MmCows/vision_data/images_15s_interval/behavior_exps/fold_{setting}/{subfolder}'
 
     # Process each row in the DataFrame
     for index, row in filtered_df2.iterrows():
@@ -63,10 +63,10 @@ def crop_behavior_cow(cow_id, cam_id, subfolder, setting):
 
     return None
 
-# Check how many of these cows behavior csv files are available
-cows = ['01','02','03','04','05','06','07','08','09','10','11','14','15','16']
+
+cows = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16']
 cams = [1, 2, 3, 4]
-settings = ['1','2','3','4','5']
+settings = ['1','2'] #['1','2','3','4','5']
 
 start_time = time.time()
 
@@ -74,7 +74,7 @@ for setting in settings:
         
     for cow in cows:
         # Read the CSV file into a DataFrame
-        filtered_df2 = pd.read_csv(f'/nfs/uraskar/Data/high_res/behaviour_detection/batch_4/filtered_df/filtered_df_C{cow}.csv')
+        filtered_df2 = pd.read_csv(f'/nfs/uraskar/Data/high_res/behaviour_detection/batch_5/filtered_df/filtered_df_C{cow}.csv')
 
         # Convert the 'datetime' column to datetime object
         filtered_df2['datetime'] = pd.to_datetime(filtered_df2['datetime'])
