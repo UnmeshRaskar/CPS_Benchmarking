@@ -33,7 +33,7 @@ def crop_behavior_cow(cow_id, cam_id, subfolder, setting):
         # We can just select the correpsonding bboxes from the right folders
         
         # Construct the file name
-        file_name = f"cam_{cam_id}{timestamp_value_int}_{datetime_value_str}_{cow_id}.jpg"
+        file_name = f"cam_{cam_id}_{timestamp_value_int}_{datetime_value_str}_{cow_id}.jpg"
         file_path = os.path.join(image_folder, file_name)
         # print(file_path)
 
