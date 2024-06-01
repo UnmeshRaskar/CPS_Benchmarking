@@ -8,10 +8,13 @@ Cropped image dir = /nfs/hvvu2/ML/Data/visual_data/cropped_bboxes/<br>
 Make comment/uncomment change as per the usecase on Line 40, no other change anywhere else <br>
 
 0.0.1) Creating folds for detection | code is ready, but not uploaded here, image copying takes longer time <br>
+
 0.0.2) Creating folds for behavior detection: run create_folds/behav_modified.py with this argument <br>
 python behav_modified.py --data_splits_config_file /nfs/uraskar/Data/high_res/behaviour_detection/omkar_copy/config_s2.json --image_dir /nfs/hvvu2/ML/Data/visual_data/cropped_bboxes/behaviors --output_dir /nfs/uraskar/Data/high_res/behaviour_detection/batch_11 <br>
+
 0.0.3) Creating folds for Standing cows identification : run create_folds/behav_modified.py with this argument<br>
 python behav_modified.py --data_splits_config_file /nfs/uraskar/Data/high_res/behaviour_detection/omkar_copy/config_s2.json --image_dir /nfs/hvvu2/ML/Data/visual_data/cropped_bboxes/behaviors --output_dir /nfs/uraskar/Data/high_res/behaviour_detection/batch_11<br>
+
 0.0.4) Creating folds for Lying cows identification : run create_folds/behav_modified.py with this argument<br>
 python behav_modified.py --data_splits_config_file /nfs/uraskar/Data/high_res/behaviour_detection/omkar_copy/config_s2.json --image_dir /nfs/hvvu2/ML/Data/visual_data/cropped_bboxes/behaviors --output_dir /nfs/uraskar/Data/high_res/behaviour_detection/batch_11<br>
 
