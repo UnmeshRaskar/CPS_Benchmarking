@@ -1,8 +1,25 @@
 # CPS_Benchmarking
 Benchmarking experiments for MmCows
 
+# 0.0) Creating all folds (temporal)
+Main image dir = /nfs/hvvu2/ML/Data/visual_data/<br>
+Cropped image dir = /nfs/hvvu2/ML/Data/visual_data/cropped_bboxes/<br>
+
+Make comment/uncomment change as per the usecase on Line 40, no other change anywhere else <br>
+
+0.0.1) Creating folds for detection | code is ready, but not uploaded here, image copying takes longer time <br>
+
+0.0.2) Creating folds for behavior detection: run create_folds/behav_modified.py with this argument <br>
+python behav_modified.py --data_splits_config_file /nfs/uraskar/Data/high_res/behaviour_detection/omkar_copy/config_s2.json --image_dir /nfs/hvvu2/ML/Data/visual_data/cropped_bboxes/behaviors --output_dir /nfs/uraskar/Data/high_res/behaviour_detection/batch_11 <br>
+
+0.0.3) Creating folds for Standing cows identification : run create_folds/behav_modified.py with this argument<br>
+python behav_modified.py --data_splits_config_file /nfs/uraskar/Data/high_res/behaviour_detection/omkar_copy/config_s2.json --image_dir /nfs/hvvu2/ML/Data/visual_data/cropped_bboxes/behaviors --output_dir /nfs/uraskar/Data/high_res/behaviour_detection/batch_11<br>
+
+0.0.4) Creating folds for Lying cows identification : run create_folds/behav_modified.py with this argument<br>
+python behav_modified.py --data_splits_config_file /nfs/uraskar/Data/high_res/behaviour_detection/omkar_copy/config_s2.json --image_dir /nfs/hvvu2/ML/Data/visual_data/cropped_bboxes/behaviors --output_dir /nfs/uraskar/Data/high_res/behaviour_detection/batch_11<br>
+
 # Pipeline:
-For the video frames available, we decided to use 
+
 # 0) Temporal splitting of the data
 We split the daily footage duration (3 AM to 12 AM = 21 hrs) into 10 chunks <br> 
 5 of these chunks (N1, N2, .., N5) are for natural light. 5 other chunks (A1, A2, ..., A5) are of artificial light <br>
