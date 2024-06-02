@@ -7,6 +7,7 @@ from multiprocessing import Pool
 import numpy as np
 from PIL import Image
 import time
+import torch.utils.data as data_utils
 
 class Custom_resize_transform(object):
     def __init__(self, output_size = (224, 224)):
@@ -53,21 +54,13 @@ def get_mean_std(loader):
 
     return mean, std
 
-# start_time = time.time()
-
-# mean, std = get_mean_std(train_loader)
-# print(f'Mean is {mean} | Std is {std}')
-
-# end_time = time.time()
-# print(f"Total execution time: {end_time - start_time:.2f} seconds")
-
 
 # Calculate for all setting folders:
 settings = ['1','2','3','4','5']
 
 for setting in settings:
     # training_dataset_path = f'/nfs/uraskar/Data/high_res/behaviour_detection/batch_4/cropped_behavior/setting_{setting}/train'
-    training_dataset_path = f'/nfs/uraskar/Data/high_res/behaviour_detection/batch_4/cow_id_settings/Experiment_{setting}/train'
+    training_dataset_path = f'/nfs/uraskar/Data/high_res/behaviour_detection/omkar_copy/cow_id_folds4/lying/fold_{setting}/train'
     print(os.listdir(training_dataset_path))
 
     training_transforms = transforms.Compose([
@@ -77,6 +70,10 @@ for setting in settings:
                 ])
 
     train_dataset = torchvision.datasets.ImageFolder(root=training_dataset_path, transform=training_transforms)
+    # We will calculate it only on randomly selected 1k examples
+    indices = torch.randperm(len(train_dataset))[:1000]
+    train_dataset = data_utils.Subset(train_dataset, indices)
+    # Comment above part later on
     train_loader = DataLoader(dataset=train_dataset, batch_size=64, shuffle=False)
 
     start_time = time.time()
