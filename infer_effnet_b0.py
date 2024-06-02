@@ -60,13 +60,13 @@ data_dir = '/nfs/uraskar/Data/high_res/behaviour_detection/batch_4/cow_id_settin
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
                   for x in ['test']}
-dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=8,
-                                             shuffle=True)
+dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=64,
+                                             shuffle=True, num_workers=8)
               for x in ['test']}
 dataset_sizes = {x: len(image_datasets[x]) for x in ['test']}
 class_names = image_datasets['test'].classes
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 print(dataset_sizes, class_names)
 
@@ -118,6 +118,13 @@ num_ftrs = 1280
 model_ft.fc = nn.Linear(num_ftrs, 7) # For Behavior Classification
 
 model_ft = model_ft.to(device)
+# multi-procecss code, this will use multi-gpus
+if torch.cuda.is_available():
+    model_ft = torch.nn.DataParallel(model_ft)
+    model_ft.to(device)
+else:
+    model_ft.to(device)
+
 
 model_ft.load_state_dict(torch.load('id_behv5.pt')) # Change 3) Change the saved model.pt name
 

@@ -58,13 +58,13 @@ data_dir = '/nfs/uraskar/Data/high_res/behaviour_detection/batch_4/cow_id_settin
 image_datasets = {x: datasets.ImageFolder(os.path.join(data_dir, x),
                                           data_transforms[x])
                   for x in ['train', 'val']}
-dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=32,
-                                             shuffle=True, num_workers=4)
+dataloaders = {x: torch.utils.data.DataLoader(image_datasets[x], batch_size=64,
+                                             shuffle=True, num_workers=8)
               for x in ['train', 'val']}
 dataset_sizes = {x: len(image_datasets[x]) for x in ['train', 'val']}
 class_names = image_datasets['train'].classes
 
-device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 print(dataset_sizes, class_names)
 
@@ -169,6 +169,12 @@ num_ftrs = 1280
 model_ft.fc = nn.Linear(num_ftrs, 7) # For Behavior
 
 model_ft = model_ft.to(device)
+# multi-process : this will enable using multipe GPUs
+if torch.cuda.is_available():
+    model_ft = torch.nn.DataParallel(model_ft)
+    model_ft.to(device)
+else:
+    model_ft.to(device)
 
 criterion = nn.CrossEntropyLoss()
 
